@@ -4,7 +4,8 @@
   "description": "Loopback module for create Socket.io connections and allow call methods and make subscriptions",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*"
   },
   "engines": {
     "node": ">=4.0.0"
@@ -35,6 +36,8 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
+    "istanbul": "^0.4.5",
     "mocha": "^5.0.0"
   }
 }

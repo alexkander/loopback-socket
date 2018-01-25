@@ -9,7 +9,7 @@ Loopback module for create Socket.io connections and allow call methods and make
 
 ## Usage
 
-    var loopbackSocket = require('loopback-socket');
+    var LoopbackSocket = require('loopback-socket');
 
   Output should be `35,666`
 
