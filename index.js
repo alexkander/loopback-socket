@@ -1,5 +1,1 @@
-'use strict';
-
-module.exports = function Module (name) {
-  return null;
-};
+module.exports = require('./lib/LoopbackSocket');
