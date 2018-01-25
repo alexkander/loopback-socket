@@ -4,7 +4,7 @@
   "description": "Loopback module for create Socket.io connections and allow call methods and make subscriptions",
   "main": "index.js",
   "scripts": {
-    "vpublish": "npm version patch -m \"Version %s - add sweet badges\" && npm publish",
+    "vpublish": "npm version patch -m \"Version %s\" && npm publish",
     "test": "mocha --reporter spec",
     "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*"
   },
