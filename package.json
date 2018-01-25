@@ -1,0 +1,40 @@
+{
+  "name": "loopback-socket",
+  "version": "0.1.0",
+  "description": "Loopback module for create Socket.io connections and allow call methods and make subscriptions",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/arondn2/loopback-socket.git"
+  },
+  "keywords": [
+    "strongloop",
+    "loopback",
+    "web",
+    "security",
+    "auth",
+    "socket",
+    "socketio",
+    "realtime",
+    "framework",
+    "websocket",
+    "events",
+    "socket",
+    "io"
+  ],
+  "author": "Alex J. Rondon <arondn2@gmail.com> (https://github.com/arondn2)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arondn2/loopback-socket/issues"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.0.0"
+  }
+}
