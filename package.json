@@ -22,12 +22,10 @@
     "security",
     "auth",
     "socket",
-    "socketio",
     "realtime",
     "framework",
     "websocket",
     "events",
-    "socket",
     "io"
   ],
   "author": "Alex J. Rondon <arondn2@gmail.com> (https://github.com/arondn2)",
@@ -46,5 +44,11 @@
     "node_modules",
     "example",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "q": "^1.5.1",
+    "socketio": "^1.0.0",
+    "socketio-auth": "^0.1.0"
+  }
 }

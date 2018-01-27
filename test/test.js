@@ -1,11 +1,16 @@
 'use strict';
 
 const expect = require('chai').expect;
-const Module = require('../index');
+const LoopbackSocket = require('../index');
 
-describe('#Module', () => {
-  it('should be itself', () => {
-    var result = new Module();
-    expect(result).to.equal(result);
+describe('#LoopbackSocket', () => {
+
+  it('.get', () => {
+    var instance1 = LoopbackSocket.get('name1');
+    var instance2 = LoopbackSocket.get('name1');
+    var instance3 = LoopbackSocket.get('name2');
+    expect(instance1).to.equal(instance2);
+    expect(instance1).to.not.equal(instance3);
   });
+
 });

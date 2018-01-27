@@ -1,1 +1,1 @@
-module.exports = require('./lib/LoopbackSocket');
+module.exports = require('./lib/loopback-socket');
