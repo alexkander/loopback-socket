@@ -48,6 +48,8 @@ Client.prototype.connect = function () {
   this.emit('connect');
 };
 
+const password = '1234';
+
 describe('#LoopbackSocket', () => {
 
   let lbSocket;
@@ -57,25 +59,36 @@ describe('#LoopbackSocket', () => {
     const name = 'testing'+(iName++);
     const server = new Server();
     lbSocket = LoopbackSocket.get(name);
-    lbSocket.auth(server, (socket, credentials) => {
-      if (credentials.token !== '1234567') {
-        throw new Error('1111');
+    lbSocket.auth((socket, credentials) => {
+      if (credentials.token !== password) {
+        throw 'unauthorized';
       }
       return { usuario: 1 }
     });
+    lbSocket.start(server);
+    return server;
+  };
+  function createServerCb() {
+    const name = 'testing'+(iName++);
+    const server = new Server();
+    lbSocket = LoopbackSocket.get(name);
+    lbSocket.auth((socket, credentials, cb) => {
+      if (credentials.token !== password) {
+        cb('unauthorized');
+      }
+      cb(null, { usuario: 1 });
+    });
+    lbSocket.start(server);
     return server;
   };
 
-  function createClient (server) {
+  function createClient (server, token) {
     const client = new Client(server);
     client.on('connect', () => {
       client.emit('authentication', {
-        token: '1234567'
+        token: token || password
       });
     });
-    // client.on('authenticated', (data) => {
-    //    client.disconnect();
-    // });
     return client;
   };
   
@@ -83,6 +96,27 @@ describe('#LoopbackSocket', () => {
     expect(LoopbackSocket.get('one')).to.equal(LoopbackSocket.get('one'));
     expect(LoopbackSocket.get('one')).to.not.equal(LoopbackSocket.get('two'));
   });
+
+  describe('authentication with cb', () => {
+    it('success', (done) => {
+      const server = createServerCb();
+      const client = createClient(server);
+      client.on('authenticated', () => {
+        done();
+      });
+      client.connect();
+    });
+
+    it('fail', (done) => {
+      const server = createServerCb();
+      const client = createClient(server, '1111');
+      client.on('unauthorized', () => {
+        done();
+      });
+      client.connect();
+    });
+    
+  })
 
   describe('onConnected', () => {
     
@@ -149,11 +183,11 @@ describe('#LoopbackSocket', () => {
 
   });
 
-  describe('addMethod', () => {
+  describe('defineMethod', () => {
     
     it('direct', (done) => {
       const server = createServer();
-      lbSocket.addMethod('gettingDataMethod', (socket, args) => {
+      lbSocket.defineMethod('gettingDataMethod', (socket, args) => {
         return { value: args.value*2 };
       });
       const client = createClient(server)
@@ -171,7 +205,7 @@ describe('#LoopbackSocket', () => {
       const server = createServer();
 
       const Model = {};
-      lbSocket.addMethod('gettingDataMethod', { model: Model, method: 'gettingDataMethod' });
+      lbSocket.defineMethod('gettingDataMethod', { model: Model, method: 'gettingDataMethod' });
       Model.gettingDataMethod = function (socket, args) {
         return { value: args.value*3 };
       };
@@ -189,7 +223,7 @@ describe('#LoopbackSocket', () => {
     
     it('invalid method', (done) => {
       const server = createServer();
-      lbSocket.addMethod('gettingDataMethod', {});
+      lbSocket.defineMethod('gettingDataMethod', {});
       const client = createClient(server)
       client.on('authenticated', () => {
         const args = { value: 3 };
@@ -203,7 +237,7 @@ describe('#LoopbackSocket', () => {
     
     it('method with callback', (done) => {
       const server = createServer();
-      lbSocket.addMethod('gettingDataMethod', (socket, args, cb) => {
+      lbSocket.defineMethod('gettingDataMethod', (socket, args, cb) => {
         if (args.value === true) {
           cb(null, { value: 4 });
         } else{
@@ -233,7 +267,7 @@ describe('#LoopbackSocket', () => {
       function gettingDataMethod(socket, credentials) {}
 
       expect(Object.keys(lbSocket._methods).length).to.equal(0);
-      lbSocket.addMethod('gettingDataMethod', gettingDataMethod);
+      lbSocket.defineMethod('gettingDataMethod', gettingDataMethod);
       expect(Object.keys(lbSocket._methods).length).to.equal(1);
       lbSocket.removeMethod('gettingDataMethod');
       expect(Object.keys(lbSocket._methods).length).to.equal(0);
@@ -243,7 +277,7 @@ describe('#LoopbackSocket', () => {
     it('not existing method', () => {
       const server = createServer();
       function gettingDataMethod(){};
-      lbSocket.addMethod('gettingDataMethod', gettingDataMethod);
+      lbSocket.defineMethod('gettingDataMethod', gettingDataMethod);
       lbSocket.removeMethod('anotherMethod');
       expect(Object.keys(lbSocket._methods).length).to.equal(1);
     });
