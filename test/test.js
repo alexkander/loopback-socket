@@ -187,7 +187,7 @@ describe('#LoopbackSocket', () => {
     
     it('direct', (done) => {
       const server = createServer();
-      lbSocket.defineMethod('gettingDataMethod', (socket, args) => {
+      lbSocket.defineMethod('gettingDataMethod', (socket, credentials, args) => {
         return { value: args.value*2 };
       });
       const client = createClient(server)
@@ -206,7 +206,7 @@ describe('#LoopbackSocket', () => {
 
       const Model = {};
       lbSocket.defineMethod('gettingDataMethod', { model: Model, method: 'gettingDataMethod' });
-      Model.gettingDataMethod = function (socket, args) {
+      Model.gettingDataMethod = function (socket, credentials, args) {
         return { value: args.value*3 };
       };
 
@@ -237,7 +237,7 @@ describe('#LoopbackSocket', () => {
     
     it('method with callback', (done) => {
       const server = createServer();
-      lbSocket.defineMethod('gettingDataMethod', (socket, args, cb) => {
+      lbSocket.defineMethod('gettingDataMethod', (socket, credentials, args, cb) => {
         if (args.value === true) {
           cb(null, { value: 4 });
         } else{

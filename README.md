@@ -77,11 +77,11 @@ Loopback module for create Socket.io connections and allow call methods.
 
 #### Method structure
 
-  The methods can receive until three arguments: `socket`, `args` and `cb`. If you define just the two first arguments the value returned to the client will be the return of the method. also if the returned value is a promise, then it will be resolved before send result to client.
+  The methods can receive until four arguments: `socket`, `credentials`, `args` and `cb`. If you define just the two first arguments the value returned to the client will be the return of the method. also if the returned value is a promise, then it will be resolved before send result to client.
 
   ```js
   /// Method with NodeJs callback style
-  function myMethod(socket, args, cb) {
+  function myMethod(socket, credentials, args, cb) {
     let data;
 
     // Option 1
@@ -93,7 +93,7 @@ Loopback module for create Socket.io connections and allow call methods.
   }
 
   /// Method with direct value returned o Promise style;
-  function myMethod(socket, args) {
+  function myMethod(socket, credentials, args) {
     let dataOrPromise;
 
     // Option 1

@@ -43,7 +43,7 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "example",
+    "examples",
     "tests"
   ],
   "dependencies": {
