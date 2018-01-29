@@ -47,7 +47,6 @@
   ],
   "dependencies": {
     "bluebird": "^3.5.1",
-    "q": "^1.5.1",
     "socketio": "^1.0.0",
     "socketio-auth": "^0.1.0"
   }
