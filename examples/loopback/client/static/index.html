@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <!-- <base href="/"> -->
+    <title>LoopbackSocket sample</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+    <link rel="stylesheet" href="app.css" />
+  
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+
+    <script src="app.js"></script>
+
+  </head>
+  <body ng-app="app" ng-controller="MainController">
+
+    <form name="loginForm" ng-submit="doLogin()">
+      <div>
+        <div>Login</div>
+        <table>
+          <tr>
+            <td>User</td>
+            <td><input type="text" ng-model="credentials.email"></td>
+          </tr>
+          <tr>
+            <td>Password</td>
+            <td><input type="password" ng-model="credentials.password"></td>
+          </tr>
+        </table>
+        <div>
+          <button type="submit" ng-disabled="promiseLogin">Login</button>
+        </div>
+      </div>
+    </form>
+    <div>
+      <button type="submit" ng-click="socketConnect()">Socket connect</button>
+    </div>
+    <div ng-if="!socket">disconnected</div>
+    <div ng-if="socket.authed===null">connecting</div>
+    <div ng-if="socket.authed===true">authenticated</div>
+    <div ng-if="socket.authed===false">unauthorized</div>
+
+    <div>
+      <table class="app-table" cellspacing="1" cellpadding="1">
+        <tr>
+          <th>Method</th>
+          <th>Params</th>
+          <th></th>
+          <th>Result</th>
+          <th></th>
+        </tr>
+        <tr>
+          <td>getProfile</td>
+          <td></td>
+          <td>{{getProfile.args}}</td>
+          <td>{{getProfile.response}}</td>
+          <td><button ng-click="getProfile()">Do</button></td>
+        </tr>
+        <tr>
+          <td>getRecords</td>
+          <td>
+            <div>skip:</div>
+            <div><input type="number" ng-model="getRecords.args.skip"></div>
+            <div>limit</div>
+            <div><input type="number" ng-model="getRecords.args.limit"></div>
+          </td>
+          <td>{{getRecords.args}}</td>
+          <td>{{getRecords.response}}</td>
+          <td><button ng-click="getRecords()">Do</button></td>
+        </tr>
+      </table>
+    </div>
+    
+  </body>
+</html>

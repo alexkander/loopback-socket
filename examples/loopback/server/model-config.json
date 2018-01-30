@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "AccessToken": {
+    "dataSource": "permanent",
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "MyUser",
+        "foreignKey": "userId"
+      }
+    }
+  },
+  "MyUser": {
+    "dataSource": "permanent",
+    "public": true
+  },
+  "MyModel": {
+    "dataSource": "permanent",
+    "public": false
+  }
+}

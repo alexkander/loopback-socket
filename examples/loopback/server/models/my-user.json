@@ -1,0 +1,15 @@
+{
+  "name": "MyUser",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "username": false
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

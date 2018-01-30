@@ -1,0 +1,21 @@
+{
+  "name": "loopback",
+  "description": "loopback",
+  "main": "server/server.js",
+  "authors": [
+    "Alex J. Rondón <arondn2@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/arondn2/loopback-socket",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.5.11",
+    "angular-resource": "1.5.11"
+  }
+}
