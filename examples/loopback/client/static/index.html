@@ -17,60 +17,62 @@
 
   </head>
   <body ng-app="app" ng-controller="MainController">
-
-    <form name="loginForm" ng-submit="doLogin()">
-      <div>
-        <div>Login</div>
+    
+    <div class="form">
+      <form name="loginForm" ng-submit="doLogin()">
+        
         <table>
           <tr>
-            <td>User</td>
-            <td><input type="text" ng-model="credentials.email"></td>
+            <td><label for="input-email">User</label></td>
+            <td><input class="input-control full-width" id="input-email" name="email" type="text" ng-model="credentials.email"></td>
           </tr>
           <tr>
-            <td>Password</td>
-            <td><input type="password" ng-model="credentials.password"></td>
+            <td><label for="input-password">Password</label></td>
+            <td><input class="input-control full-width"  id="input-password" name="password" type="password" ng-model="credentials.password"></td>
+          </tr>
+          <tr>
+            <td><label>Estado</label></td>
+            <td>{{ socket | socketState}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input class="button full-width" type="submit" value="Submit"></td>
           </tr>
         </table>
-        <div>
-          <button type="submit" ng-disabled="promiseLogin">Login</button>
-        </div>
-      </div>
-    </form>
-    <div>
-      <button type="submit" ng-click="socketConnect()">Socket connect</button>
+
+      </form>
     </div>
-    <div ng-if="!socket">disconnected</div>
-    <div ng-if="socket.authed===null">connecting</div>
-    <div ng-if="socket.authed===true">authenticated</div>
-    <div ng-if="socket.authed===false">unauthorized</div>
 
     <div>
-      <table class="app-table" cellspacing="1" cellpadding="1">
+      <table class="table" cellspacing="1" cellpadding="1">
         <tr>
           <th>Method</th>
-          <th>Params</th>
-          <th></th>
-          <th>Result</th>
-          <th></th>
+          <th>args</th>
+          <th>response</th>
         </tr>
         <tr>
-          <td>getProfile</td>
-          <td></td>
-          <td>{{getProfile.args}}</td>
-          <td>{{getProfile.response}}</td>
-          <td><button ng-click="getProfile()">Do</button></td>
-        </tr>
-        <tr>
-          <td>getRecords</td>
           <td>
-            <div>skip:</div>
-            <div><input type="number" ng-model="getRecords.args.skip"></div>
-            <div>limit</div>
-            <div><input type="number" ng-model="getRecords.args.limit"></div>
+            <div><i>getProfile</i></div>
+            <div><button class="button" ng-click="exec(getProfile, args.getProfile)">Call</button></div>
           </td>
-          <td>{{getRecords.args}}</td>
-          <td>{{getRecords.response}}</td>
-          <td><button ng-click="getRecords()">Do</button></td>
+          <td><pre>{{args.getProfile}}</pre></td>
+          <td><pre>{{responses.getProfile}}</pre></td>
+        </tr>
+        <tr>
+          <td>
+            <div><i>getRecords</i></div>
+            <div>
+              <small>skip</small>
+              <input class="input-control" type="text" ng-model="args.getRecords.skip">
+            </div>
+            <div>
+              <small>limit</small>
+              <input  class="input-control" type="text" ng-model="args.getRecords.limit">
+            </div>
+            <div><button class="button" ng-click="exec(getRecords, args.getRecords)">Call</button></div>
+          </td>
+          <td><pre>{{args.getRecords}}</pre></td>
+          <td><pre>{{responses.getRecords}}</pre></td>
         </tr>
       </table>
     </div>
