@@ -19,9 +19,9 @@ app.start = function() {
     }
 
     // LoobakSocket setup
-    const lbSocket = LoopbackSocket.get('myapp');
+    const loopbackSocket = LoopbackSocket.get('myapp');
     const socketServer = io(handler);
-    lbSocket.start(socketServer);
+    loopbackSocket.start(socketServer);
 
   });
 

@@ -7,9 +7,9 @@ const app = require('../server');
 
 module.exports = function(MyUser) {
 
-  const lbSocket = LoopbackSocket.get('myapp');
+  const loopbackSocket = LoopbackSocket.get('myapp');
 
-  lbSocket.auth({ model: MyUser, method: 'authenticate', });
+  loopbackSocket.auth({ model: MyUser, method: 'authenticate', });
   MyUser.authenticate = function (socket, credentials) {
     return Promise.resolve()
     .then(() => {
@@ -30,7 +30,7 @@ module.exports = function(MyUser) {
     })
   };
 
-  lbSocket.defineMethod('getProfile', { model: MyUser, method: 'getProfile', });
+  loopbackSocket.defineMethod('getProfile', { model: MyUser, method: 'getProfile', });
   MyUser.getProfile = function (socket, credentials, args) {
     return app.models.MyUser.findById(credentials.userId);
   };

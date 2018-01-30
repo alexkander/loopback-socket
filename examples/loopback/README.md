@@ -1,4 +1,4 @@
-# Loopback + AngularJS Sample
+# LoopbackSocket Sample with AngularJS
 
 ## Installation
 
@@ -21,21 +21,21 @@
 
 ```js
 // server/server.js
-// ....
-const lbSocket = LoopbackSocket.get('myapp');
+// ...
+const loopbackSocket = LoopbackSocket.get('myapp');
 const socketServer = io(handler);
-lbSocket.start(socketServer);
-// ....
+loopbackSocket.start(socketServer);
+// ...
 ```
 
 #### Authentication
 
 ```js
 // server/models/my-user.js
-// ....
-const lbSocket = LoopbackSocket.get('myapp');
+// ...
+const loopbackSocket = LoopbackSocket.get('myapp');
 
-lbSocket.auth({ model: MyUser, method: 'authenticate', });
+loopbackSocket.auth({ model: MyUser, method: 'authenticate', });
 MyUser.authenticate = function (socket, credentials) {
   return Promise.resolve()
   .then(() => {
@@ -55,31 +55,31 @@ MyUser.authenticate = function (socket, credentials) {
     if (!user) throw 'Socket User not found';
   })
 };
-// ....
+// ...
 ```
 
 #### Methods definitions
 
 ```js
 // server/models/my-user.js
-// ....
-lbSocket.defineMethod('getProfile', { model: MyUser, method: 'getProfile', });
+// ...
+loopbackSocket.defineMethod('getProfile', { model: MyUser, method: 'getProfile', });
 MyUser.getProfile = function (socket, credentials, args) {
   return app.models.MyUser.findById(credentials.userId);
 };
-// ....
+// ...
 
 // server/models/my-model.js
-// ....
-const lbSocket = LoopbackSocket.get('myapp');
-lbSocket.defineMethod('getRecords', { model: MyModel, method: 'getRecords', });
+// ...
+const loopbackSocket = LoopbackSocket.get('myapp');
+loopbackSocket.defineMethod('getRecords', { model: MyModel, method: 'getRecords', });
 MyModel.getRecords = function (socket, credentials, args) {
   return MyModel.find({
     skip: args.skip,
     limit: args.limit,
   });
 };
-// ....
+// ...
 ```
 
 ### Client side

@@ -4,9 +4,9 @@ const LoopbackSocket = require('loopback-socket');
 
 module.exports = function(MyModel) {
 
-  const lbSocket = LoopbackSocket.get('myapp');
+  const loopbackSocket = LoopbackSocket.get('myapp');
 
-  lbSocket.defineMethod('getRecords', { model: MyModel, method: 'getRecords', });
+  loopbackSocket.defineMethod('getRecords', { model: MyModel, method: 'getRecords', });
   MyModel.getRecords = function (socket, credentials, args) {
     return MyModel.find({
       skip: args.skip,

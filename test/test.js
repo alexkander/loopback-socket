@@ -52,33 +52,33 @@ const password = '1234';
 
 describe('#LoopbackSocket', () => {
 
-  let lbSocket;
+  let loopbackSocket;
 
   let iName = 1;
   function createServer() {
     const name = 'testing'+(iName++);
     const server = new Server();
-    lbSocket = LoopbackSocket.get(name);
-    lbSocket.auth((socket, credentials) => {
+    loopbackSocket = LoopbackSocket.get(name);
+    loopbackSocket.auth((socket, credentials) => {
       if (credentials.token !== password) {
         throw 'unauthorized';
       }
       return { usuario: 1 }
     });
-    lbSocket.start(server);
+    loopbackSocket.start(server);
     return server;
   };
   function createServerCb() {
     const name = 'testing'+(iName++);
     const server = new Server();
-    lbSocket = LoopbackSocket.get(name);
-    lbSocket.auth((socket, credentials, cb) => {
+    loopbackSocket = LoopbackSocket.get(name);
+    loopbackSocket.auth((socket, credentials, cb) => {
       if (credentials.token !== password) {
         cb('unauthorized');
       }
       cb(null, { usuario: 1 });
     });
-    lbSocket.start(server);
+    loopbackSocket.start(server);
     return server;
   };
 
@@ -122,7 +122,7 @@ describe('#LoopbackSocket', () => {
     
     it('direct', (done) => {
       const server = createServer();
-      lbSocket.onConnected(function onConnected(socket, credentials) {
+      loopbackSocket.onConnected(function onConnected(socket, credentials) {
         done();
       });
       createClient(server).connect();
@@ -131,7 +131,7 @@ describe('#LoopbackSocket', () => {
     it('Model method', (done) => {
       const server = createServer();
       const Model = {};
-      lbSocket.onConnected({ model: Model, method: 'onConnected' });
+      loopbackSocket.onConnected({ model: Model, method: 'onConnected' });
       Model.onConnected = (socket, credentials) => {
         done();
       };
@@ -150,15 +150,15 @@ describe('#LoopbackSocket', () => {
         sw = true;
       }
 
-      expect(lbSocket._connected.length).to.equal(0);
-      lbSocket.onConnected(onConnected);
-      expect(lbSocket._connected.length).to.equal(1);
+      expect(loopbackSocket._connected.length).to.equal(0);
+      loopbackSocket.onConnected(onConnected);
+      expect(loopbackSocket._connected.length).to.equal(1);
       const client = createClient(server);
       
       client.on('authenticated', () => {
         expect(sw).to.equal(true);
-        lbSocket.removeOnConnected(onConnected);
-        expect(lbSocket._connected.length).to.equal(0);
+        loopbackSocket.removeOnConnected(onConnected);
+        expect(loopbackSocket._connected.length).to.equal(0);
         
         sw = false;
         const client2 = createClient(server);
@@ -176,9 +176,9 @@ describe('#LoopbackSocket', () => {
     it('not existing method', () => {
       const server = createServer();
       function onConnected(){};
-      lbSocket.onConnected(onConnected);
-      lbSocket.removeOnConnected(()=>{});
-      expect(lbSocket._connected.length).to.equal(1);
+      loopbackSocket.onConnected(onConnected);
+      loopbackSocket.removeOnConnected(()=>{});
+      expect(loopbackSocket._connected.length).to.equal(1);
     });
 
   });
@@ -187,7 +187,7 @@ describe('#LoopbackSocket', () => {
     
     it('direct', (done) => {
       const server = createServer();
-      lbSocket.defineMethod('gettingDataMethod', (socket, credentials, args) => {
+      loopbackSocket.defineMethod('gettingDataMethod', (socket, credentials, args) => {
         return { value: args.value*2 };
       });
       const client = createClient(server)
@@ -205,7 +205,7 @@ describe('#LoopbackSocket', () => {
       const server = createServer();
 
       const Model = {};
-      lbSocket.defineMethod('gettingDataMethod', { model: Model, method: 'gettingDataMethod' });
+      loopbackSocket.defineMethod('gettingDataMethod', { model: Model, method: 'gettingDataMethod' });
       Model.gettingDataMethod = function (socket, credentials, args) {
         return { value: args.value*3 };
       };
@@ -223,7 +223,7 @@ describe('#LoopbackSocket', () => {
     
     it('invalid method', (done) => {
       const server = createServer();
-      lbSocket.defineMethod('gettingDataMethod', {});
+      loopbackSocket.defineMethod('gettingDataMethod', {});
       const client = createClient(server)
       client.on('authenticated', () => {
         const args = { value: 3 };
@@ -237,7 +237,7 @@ describe('#LoopbackSocket', () => {
     
     it('method with callback', (done) => {
       const server = createServer();
-      lbSocket.defineMethod('gettingDataMethod', (socket, credentials, args, cb) => {
+      loopbackSocket.defineMethod('gettingDataMethod', (socket, credentials, args, cb) => {
         if (args.value === true) {
           cb(null, { value: 4 });
         } else{
@@ -266,20 +266,20 @@ describe('#LoopbackSocket', () => {
       
       function gettingDataMethod(socket, credentials) {}
 
-      expect(Object.keys(lbSocket._methods).length).to.equal(0);
-      lbSocket.defineMethod('gettingDataMethod', gettingDataMethod);
-      expect(Object.keys(lbSocket._methods).length).to.equal(1);
-      lbSocket.removeMethod('gettingDataMethod');
-      expect(Object.keys(lbSocket._methods).length).to.equal(0);
+      expect(Object.keys(loopbackSocket._methods).length).to.equal(0);
+      loopbackSocket.defineMethod('gettingDataMethod', gettingDataMethod);
+      expect(Object.keys(loopbackSocket._methods).length).to.equal(1);
+      loopbackSocket.removeMethod('gettingDataMethod');
+      expect(Object.keys(loopbackSocket._methods).length).to.equal(0);
       
     });
     
     it('not existing method', () => {
       const server = createServer();
       function gettingDataMethod(){};
-      lbSocket.defineMethod('gettingDataMethod', gettingDataMethod);
-      lbSocket.removeMethod('anotherMethod');
-      expect(Object.keys(lbSocket._methods).length).to.equal(1);
+      loopbackSocket.defineMethod('gettingDataMethod', gettingDataMethod);
+      loopbackSocket.removeMethod('anotherMethod');
+      expect(Object.keys(loopbackSocket._methods).length).to.equal(1);
     });
 
   });

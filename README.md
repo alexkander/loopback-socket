@@ -19,111 +19,143 @@ Loopback module for create Socket.io connections and allow call methods.
 const LoopbackSocket = require('loopback-socket');
 ```
 
-#### Instance
+#### LoopbackSocket.get(name, [timeout])
 
-The method `LoopbackSocket.get` to create a new instance with a name or return the instance with the that name. The second argument of this method define the time to wait authentication after stablish connection before disconnect the socket.
+Create or get a instance with a specific name.
 
+##### Arguments
+ Name        | Type      | Description
+-------------|-----------|-------------
+ `name`      | `string`  | Name to instance. Required
+ `[timeout]` | `integer` | Time to wait authentication after establish connection before disconnect the socket. Optional.
+
+##### Samples
 ```js
-const lbSocket = LoopbackSocket.get('name');
-const lbSocket = LoopbackSocket.get('name', 2000);
+const loopbackSocket = LoopbackSocket.get('name');
+const loopbackSocket = LoopbackSocket.get('name', 2000);
 ```
 
-#### Initialize
+#### loopbackSocket.start(io)
 
-To start it is necesary call `lbSocket.start` method indicating the server socket.
+Configure authentication, callbacks and methods with a server socket.
 
+##### Arguments
+ Name | Type     | Description
+------|----------|-------------
+ `io` | `object` | Server Socket IO instance. Required.
+
+##### Samples
 ```js
 const server = require('http').createServer();
 const io = require('socket.io')(server);
-lbSocket.start(io);
+loopbackSocket.start(io);
 ```
 
-#### Authentication function
+#### loopbackSocket.auth(authentication)
 
-To autenticate the socket, it must send its credentials once it establish connection. It will be disconnected if authentication fails or if it is not authenticated within the established time in `LoopbackSocket.get` second parameter.
+Set the function to authenticate connected sockets.
 
+##### Arguments
+ Name             | Type                                 | Description
+------------------|--------------------------------------|-------------
+ `authentication` | `autentication function` or `object` | Function called with `(socket, credentials, [cb])` arguments or object like `{ model: Model, method: methodName }` where `Model` is a class and `methodName` is one of its methods (defined or to be defined) like `autentication function`.
+
+##### Authentication function
+
+If an error is thrown in this function or it return a false value then authentication fails. If argument `cb` is not defined then the returned value will be a the authentication response, and if this value is a promise, then it will be resolved before.
+
+ Name          | Type       | Description
+---------------|------------|-------------
+ `socket`      | `object`   | Socket connected. Required.
+ `credentials` | `object`   | Credentials received. Required.
+ `[cb]`        | `function` | Callback with `(err, success)` arguments to async return value with NodeJs callback style. Optional.
+
+##### Samples
 ```js
-// Method with NodeJs callback style
-function myAuthentication(socket, credentials, cb) {
+// Authentication function with NodeJs callback style
+function customAuthentication(socket, credentials, cb) {
   User.getUserByCredentials(credentials, cb);
 }
 
-// Method with direct value returned o Promise style;
-function myAuthentication(socket, credentials) {
+// Authentication function with direct value returned o Promise style
+function customAuthentication(socket, credentials) {
   return User.getUserByCredentials(credentials); // return data or a promise
 }
-```
 
-To set the autentication method use `lbSocket.auth` method.
+// Direct setting
+loopbackSocket.auth(customAuthentication);
 
-##### Set simple authentication
-
-```js
-lbSocket.auth(myAuthentication);
-```
-
-##### Set Model method authentication
-
-```js
+// Setting through a Model
 function MyModel() {};
 
-lbSocket.auth({
+loopbackSocket.auth({
   model: MyModel,
   method: 'customAuthentication'
 });
 
-MyModel.customAuthentication = myAuthentication;
+MyModel.customAuthentication = authentication;
 ```
 
-#### Method structure
+#### loopbackSocket.defineMethod(methodName, method)
 
-The methods can receive until four arguments: `socket`, `credentials`, `args` and `cb`. If you define just the two first arguments the value returned to the client will be the return of the method. also if the returned value is a promise, then it will be resolved before send result to client.
+Define a method to call by socket connection or replace one existing.
 
+##### Arguments
+ Name         | Type                          | Description
+--------------|-------------------------------|-------------
+ `methodName` | `string`                      | Method name.
+ `method`     | `method function` or `object` | Function called with `(socket, credentials, args, [cb])` arguments or object like `{ model: Model, method: methodName }` where `Model` is a class and `methodName` is one of its methods (defined or to be defined) with like `method function`.
+
+##### Method function
+
+If argument `cb` is not defined then the returned value will be the method called reponse, and if this value is a promise, then it will be resolved before.
+
+ Name          | Type       | Description
+---------------|------------|-------------
+ `socket`      | `object`   | Socket connected. Required.
+ `credentials` | `object`   | Credentials received. Required.
+ `args`.       | `object`   | Arguments to call method. Required.
+ `[cb]`        | `function` | Callback with `(err, success)` arguments to async return value with NodeJs callback style. Optional.
+
+##### Samples
 ```js
-/// Method with NodeJs callback style
-function myMethod(socket, credentials, args, cb) {
+/// Method function with NodeJs callback style
+function customMethod(socket, credentials, args, cb) {
   let data;
 
   // Option 1
-  cb(null, data); // Client receive { result: data }
+  cb(null, data); // Client receives { result: data }
   
   // Option 2
-  cb('myError');  // Client receive { error: 'myError' }
+  cb('myError');  // Client receives { error: 'myError' }
 
 }
 
-/// Method with direct value returned o Promise style;
-function myMethod(socket, credentials, args) {
+/// Method function with direct value returned o Promise style
+function customMethod(socket, credentials, args) {
   let dataOrPromise;
 
   // Option 1
-  return dataOrPromise; // Client receive { result: dataOrPromiseResolvedValue }
+  return dataOrPromise; // Client receives { result: dataOrPromiseResolvedValue }
 
   // Option 2
-  throw 'myError'; // Client receive { error: 'myError' }
+  throw 'myError'; // Client receives { error: 'myError' }
 
 }
-```
 
-To define a method use the method `lbSocket.defineMethod`.
+// Direct definition
+loopbackSocket.defineMethod('customMethod', customMethod);
 
-##### Define simple method
 
-```js
-lbSocket.defineMethod('myMethod', myMethod);
-```
-
-##### Define model method
-
-```js
+// Definition through a Model
 function MyModel() {};
 
-lbSocket.defineMethod('myMethod', {
+loopbackSocket.defineMethod('customMethod', {
   model: MyModel,
-  method: 'myMethod',
+  method: 'customMethod',
 });
 
-MyModel.myMethod = myMethod;
+MyModel.customMethod = customMethod;
 
 ```
 
@@ -133,17 +165,16 @@ MyModel.myMethod = myMethod;
 const socket = io('http://localhost');
 
 socket.on('connect', (socket) => {
-  // Send credentials
+  // send credentials
   socket.emit('authentication', credentials);
 });
 
 socket.on('authenticated', (socket) => {
   // socket authenticated
-
 });
 
 socket.on('unauthorized', (socket) => {
-  // socket fail authentication
+  // socket failed authentication
 });
 
 function callMyMethod() {
