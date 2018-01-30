@@ -35,4 +35,26 @@ module.exports = function(MyUser) {
     return app.models.MyUser.findById(credentials.userId);
   };
 
+  loopbackSocket.onConnected({ model: MyUser, method: 'onConnected', })
+  MyUser.onConnected = function (socket, credentials) {
+    // Do something with each autenticated socket
+  };
+
+  MyUser.removeOnConnectMethod = function () {
+
+    // remove on connect handler with direct method
+    loopbackSocket.removeOnConnected(MyUser.onConnected);
+
+    // remove on connect handler with object argument
+    loopbackSocket.removeOnConnected({ model: MyUser, method: 'onConnected', });
+
+  };
+
+  MyUser.removeMethodProfileMethod = function () {
+
+    // remove on connect handler with direct method
+    loopbackSocket.removeMethod('getProfile');
+
+  };
+
 };
