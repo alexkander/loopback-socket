@@ -1,5 +1,5 @@
 loopback-socket
-=========
+===============
 
 [![npm version](https://badge.fury.io/js/loopback-socket.svg)](https://badge.fury.io/js/loopback-socket) [![Build Status](https://travis-ci.org/arondn2/loopback-socket.svg?branch=master)](https://travis-ci.org/arondn2/loopback-socket)
 [![Coverage Status](https://coveralls.io/repos/github/arondn2/loopback-socket/badge.svg?branch=master)](https://coveralls.io/github/arondn2/loopback-socket?branch=master)

@@ -50,7 +50,7 @@ Client.prototype.connect = function () {
 
 const password = '1234';
 
-describe('#LoopbackSocket', () => {
+describe('#loopback-socket', () => {
 
   let loopbackSocket;
 
