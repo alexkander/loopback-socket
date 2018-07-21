@@ -1,5 +1,5 @@
 {
-  "name": "loopback-socket-example",
+  "name": "loopback-socket-example-angular1",
   "description": "loopback",
   "main": "server/server.js",
   "authors": [

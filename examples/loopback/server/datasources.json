@@ -1,7 +1,0 @@
-{
-  "permanent": {
-    "name": "permanent",
-    "connector": "memory",
-    "file": "storage/ds.json"
-  }
-}

@@ -1,0 +1,6 @@
+{
+  "permanent": {
+    "name": "permanent",
+    "connector": "memory"
+  }
+}
