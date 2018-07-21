@@ -35,9 +35,9 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "coveralls": "^3.0.0",
+    "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",
-    "mocha": "^5.0.0"
+    "mocha": "^5.2.0"
   },
   "ignore": [
     "**/.*",
@@ -48,6 +48,6 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "socketio": "^1.0.0",
-    "socketio-auth": "^0.1.0"
+    "socketio-auth": "^0.1.1"
   }
 }
