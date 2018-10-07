@@ -1,6 +1,6 @@
 {
   "name": "loopback-socket",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Loopback module for create Socket.io connections and allow call methods and make subscriptions",
   "main": "index.js",
   "scripts": {
