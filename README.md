@@ -280,7 +280,7 @@ function callMyMethod() {
 
 https://github.com/arondn2/loopback-socket/tree/master/examples/loopback
 
-### Troubles
+## Troubles
 
 If you have any kind of trouble with it, just let me now by raising an issue on the GitHub issue tracker here:
 
