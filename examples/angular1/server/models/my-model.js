@@ -1,6 +1,6 @@
 'use strict';
 
-const LoopbackSocket = require('loopback-socket');
+const LoopbackSocket = require('../../../../'); // const LoopbackSocket = require('loopback-socket');
 
 module.exports = function(MyModel) {
 

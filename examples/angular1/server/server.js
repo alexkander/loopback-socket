@@ -2,8 +2,8 @@
 
 const loopback       = require('loopback');
 const boot           = require('loopback-boot');
-const LoopbackSocket = require('loopback-socket');
 const io             = require('socket.io');
+const LoopbackSocket = require('../../../'); // const LoopbackSocket = require('loopback-socket');
 
 const app = module.exports = loopback();
 

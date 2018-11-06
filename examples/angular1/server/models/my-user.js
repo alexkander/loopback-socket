@@ -1,7 +1,6 @@
 'use strict';
 
-const LoopbackSocket = require('loopback-socket');
-const Promise        = require('bluebird');
+const LoopbackSocket = require('../../../../'); // const LoopbackSocket = require('loopback-socket');
 
 const app = require('../server');
 
