@@ -220,6 +220,21 @@ describe('#loopback-socket', () => {
       });
       client.connect();
     });
+
+    it('Model method without response handler', (done) => {
+      const server = createServer();
+      const client = createClient(server);
+      const Model = {};
+
+      loopbackSocket.defineMethod('notificationMethod', { model: Model, method: 'notificationMethod' });
+      Model.notificationMethod = function (socket, credentials, argsRecieved) {
+        done();
+      };
+      client.on('authenticated', () => {
+        client.emit('notificationMethod', {});
+      });
+      client.connect();
+    });
     
     it('invalid method', (done) => {
       const server = createServer();
