@@ -20,7 +20,7 @@
     "strong-error-handler": "^3.0.0"
   },
   "devDependencies": {
-    "eslint": "^3.17.1",
+    "eslint": "^7.6.0",
     "eslint-config-loopback": "^8.0.0"
   },
   "repository": {
